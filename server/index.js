@@ -1,10 +1,13 @@
 const express = require("express");
+const cors = require('cors');
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3002;
 
 const app = express();
+app.use(express.json())
+app.use(cors())
 
-app.get("/api/v1/login-test", (req, res) => {
+app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
