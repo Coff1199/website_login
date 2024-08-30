@@ -3,6 +3,7 @@ import { useState } from "react";
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPass, setShowPass] = useState(false);
     return (
         <>
             <form id="login-form">
@@ -14,12 +15,18 @@ function Login() {
                 </div>
                 <div>
                     <label htmlFor="pass">Password:</label>
-                    <input id="pass" type="text" onChange={(e) => {
+                    <input id="pass" type={showPass? "text" : "password"} onChange={(e) => {
                         setPassword(e.target.value)
                     }}/>
                 </div>
-                <input type="button" text="Login" onClick={ () => {
+                <input id="show-pass-checkbox"type="checkbox" onClick={() => {
+                        setShowPass(!showPass);
+                    }}/>
+                    <label htmlFor="show-pass-checkbox">Show Password?</label>
+                <input type="button" value="Login" onClick={ () => {
                     console.log("Success, " + username + " " + password);
+                    setUsername('');
+                    setPassword('');
                 }}/>
             </form>
         </>
