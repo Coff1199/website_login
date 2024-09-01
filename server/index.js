@@ -11,6 +11,15 @@ app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
+let username;
+let password;
+
+app.post("/api/login", (req, res) => {
+  username = req.body.username;
+  password = req.body.password;
+  console.log(username, password)
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
