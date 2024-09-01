@@ -19,7 +19,6 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>{!data ? "Loading..." : data}</p>
         <CreateAccount />
-        <Login />
       </header>
     </div>
   );
