@@ -1,30 +1,33 @@
+require('dotenv').config();
+
 const express = require("express");
 const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-const PORT = 3002;
+
+const bcrypt = require('bcrypt');
+
+const PORT = process.env.PORT || 3002;
 
 const app = express();
 app.use(express.json())
 app.use(cors())
 
 const options = {
-  key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
-  cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
+  key: fs.readFileSync(path.resolve(__dirname, process.env.PRIVATE_KEY_PATH)),
+  cert: fs.readFileSync(path.resolve(__dirname, process.env.CERTIFICATE_PATH))
 };
 
 app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
-let username;
-let password;
-
 app.post("/api/login", (req, res) => {
-  username = req.body.username;
-  password = req.body.password;
-  console.log(username, password)
+  bcrypt.hash(req.body.password, 10, (err, hash) => { 
+    if (err) throw err; // Store the hash in your database 
+      console.log(hash, req.body.password); 
+  });
 });
 
 app.listen(PORT, () => {
