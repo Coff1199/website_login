@@ -23,10 +23,11 @@ app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
-app.post("/api/login", (req, res) => {
+app.post("/api/create-account", (req, res) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => { 
-    if (err) throw err; // Store the hash in your database 
-      console.log(hash, req.body.password); 
+    if (err) throw err;
+    // Store the hash in your database {username, email, hashedpassword}
+    console.log(hash); 
   });
 });
 

@@ -1,7 +1,8 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Login from './Components/Login.js'
+import Login from './Components/Login.js';
+import CreateAccount from './Components/CreateAccount.js'
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -17,7 +18,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>{!data ? "Loading..." : data}</p>
-        <Login/>
+        <CreateAccount/>
       </header>
     </div>
   );
