@@ -5,6 +5,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [showPass, setShowPass] = useState(false);
     const [email, setEmail] = useState('');
+    const [errors, setErrors] = useState({});
 
     return (
         <>
@@ -18,7 +19,11 @@ function Login() {
                         })
                         console.log("Successfully created account and added to database");
                     } else {
-                        console.log("Field missing")
+                        let newErrors = {}
+                        if (!username) newErrors.username ='Username is required';
+                        if (!email) newErrors.email = 'Email is required';
+                        if (!password) newErrors.password = 'Password is required';
+                        setErrors(newErrors);
                     }
                     setUsername('');
                     setPassword('');
@@ -29,18 +34,21 @@ function Login() {
                     <input id="user"type="text" value= {username} onChange={(e) => {
                         setUsername(e.target.value)
                     }}/>
+                    {errors.username && <span className="required">{errors.username}</span>}
                 </div>
                 <div>
                     <label htmlFor="email">Email:</label>
                     <input id="email"type="email" value= {email} onChange={(e) => {
                         setEmail(e.target.value)
                     }}/>
+                    {errors.email && <span className="required">{errors.email}</span>}
                 </div>
                 <div>
                     <label htmlFor="pass">Password:</label>
                     <input id="pass" value={password} type={showPass? "text" : "password"} onChange={(e) => {
                         setPassword(e.target.value)
                     }}/>
+                    {errors.password && <span className="required">{errors.password}</span>}
                 </div>
                 <input id="show-pass-checkbox"type="checkbox" onClick={() => {
                         setShowPass(!showPass);
