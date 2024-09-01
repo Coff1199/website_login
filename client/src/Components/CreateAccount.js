@@ -4,29 +4,30 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPass, setShowPass] = useState(false);
+    const [email, setEmail] = useState('');
     const [errors, setErrors] = useState({});
+
     return (
         <>
-            <form id="login-form" onSubmit={ (e) => {
+            <form id="create-account-form" onSubmit={ (e) => {
                     e.preventDefault();
-                    if (username && password) {
-                        console.log("Checking Login" + username + " " + password);
-                        setErrors({});
-                        /**fetch('/api/login', {
+                    if (username && password && email) {
+                        fetch('/api/create-account', {
                             headers: {'Content-Type': 'application/json'},
                             method: "POST",
-                            body: JSON.stringify({username: username, password: password})
-                        }).then((res) => {
-
-                        })**/
+                            body: JSON.stringify({username: username, email: email, password: password})
+                        })
+                        console.log("Successfully created account and added to database");
                     } else {
                         let newErrors = {}
                         if (!username) newErrors.username ='Username is required';
+                        if (!email) newErrors.email = 'Email is required';
                         if (!password) newErrors.password = 'Password is required';
                         setErrors(newErrors);
                     }
                     setUsername('');
                     setPassword('');
+                    setEmail('');
                 }}>
                 <div>
                     <label htmlFor="user">Username:</label>
@@ -34,6 +35,13 @@ function Login() {
                         setUsername(e.target.value)
                     }}/>
                     {errors.username && <span className="required">{errors.username}</span>}
+                </div>
+                <div>
+                    <label htmlFor="email">Email:</label>
+                    <input id="email"type="email" value= {email} onChange={(e) => {
+                        setEmail(e.target.value)
+                    }}/>
+                    {errors.email && <span className="required">{errors.email}</span>}
                 </div>
                 <div>
                     <label htmlFor="pass">Password:</label>
@@ -46,15 +54,8 @@ function Login() {
                         setShowPass(!showPass);
                     }}/>
                     <label htmlFor="show-pass-checkbox">Show Password?</label>
-                <input type="submit" value="Login" />
+                <input type="submit" value="Create Account" />
             </form>
-            <div>
-                <button onClick = { () => {
-                    //change page
-                }}>
-                    Don't already have an account?
-                </button>
-            </div>
         </>
     )
 }
