@@ -1,0 +1,61 @@
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0.25em;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: black;
+}
+
+.field {
+}
+
+.field label {
+    float: left;
+    width: 6em;
+    text-align: left;
+    font-size: 80%;
+    padding-right: 0.5em;
+}
+
+.field input {
+    width: 80%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #999;
+    color: white;
+    border-radius: 5px;
+    font-size: 80%;
+    background-color: #282c34;
+}
+
+#show-pass-checkbox {
+    margin-inline: auto;
+    display:inline;
+    justify-content: center;
+}
+
+#checkbox-label {
+    display: inline;
+    white-space: nowrap;
+    font-size: 75%;
+}
+
+
+input[type="submit"] {
+    margin-inline: auto;
+    display:flex;
+    justify-content: center;
+    border-radius: 20px;
+    width: 50%;
+    background-color: #999;
+    font: normal 0.8em Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.required {
+    display:block;
+    color: red;
+    font-size: 60%;
+}

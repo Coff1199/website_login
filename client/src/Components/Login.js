@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/form.css";
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -28,14 +29,14 @@ function Login() {
                     setUsername('');
                     setPassword('');
                 }}>
-                <div>
+                <div className="field">
                     <label htmlFor="user">Username:</label>
                     <input id="user"type="text" value= {username} onChange={(e) => {
                         setUsername(e.target.value)
                     }}/>
                     {errors.username && <span className="required">{errors.username}</span>}
                 </div>
-                <div>
+                <div className="field">
                     <label htmlFor="pass">Password:</label>
                     <input id="pass" value={password} type={showPass? "text" : "password"} onChange={(e) => {
                         setPassword(e.target.value)
@@ -45,7 +46,7 @@ function Login() {
                 <input id="show-pass-checkbox"type="checkbox" onClick={() => {
                         setShowPass(!showPass);
                     }}/>
-                    <label htmlFor="show-pass-checkbox">Show Password?</label>
+                    <label id = "checkbox-label" htmlFor="show-pass-checkbox">Show Password?</label>
                 <input type="submit" value="Login" />
             </form>
             <div>
