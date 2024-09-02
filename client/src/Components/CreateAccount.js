@@ -16,7 +16,7 @@ function Login() {
                         fetch('/api/create-account', {
                             headers: {'Content-Type': 'application/json'},
                             method: "POST",
-                            body: JSON.stringify({username: username, email: email, password: password})
+                            body: JSON.stringify({username: username, email: email, password: password, dateCreated:new Date()})
                         })
                         console.log("Successfully created account and added to database");
                     } else {

@@ -5,6 +5,7 @@ const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const bcrypt = require('bcrypt');
 
@@ -23,11 +24,26 @@ app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
+mongoose.connect(process.env.DB_CONN).then((conn) => {
+    console.log("db connection successful");
+}).catch((err) => {
+  console.log(err)
+});
+
+let conn = mongoose.connection;
+
 app.post("/api/create-account", (req, res) => {
   bcrypt.hash(req.body.password, 10, (err, hash) => { 
     if (err) throw err;
-    // Store the hash in your database {username, email, hashedpassword}
-    console.log(hash); 
+    const User = require('./models/AccountModel')
+
+    let user = new User({
+      username: req.body.username,
+      email:req.body.email,
+      password: hash,
+      dateCreated: new Date(),
+    });
+    user.save();
   });
 });
 
