@@ -11,15 +11,14 @@ function Login() {
             <form id="login-form" onSubmit={ (e) => {
                     e.preventDefault();
                     if (username && password) {
-                        console.log("Checking Login" + username + " " + password);
                         setErrors({});
-                        /**fetch('/api/login', {
+                        fetch('/api/login/', {
                             headers: {'Content-Type': 'application/json'},
                             method: "POST",
                             body: JSON.stringify({username: username, password: password})
                         }).then((res) => {
-
-                        })**/
+                            console.log("Successfully logged in")
+                        })
                     } else {
                         let newErrors = {}
                         if (!username) newErrors.username ='Username is required';
@@ -30,7 +29,7 @@ function Login() {
                     setPassword('');
                 }}>
                 <div className="field">
-                    <label htmlFor="user">Username:</label>
+                    <label htmlFor="user">Username/Email:</label>
                     <input id="user"type="text" value= {username} onChange={(e) => {
                         setUsername(e.target.value)
                     }}/>

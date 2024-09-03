@@ -12,8 +12,11 @@ function Login() {
         <>
             <form id="create-account-form" onSubmit={ (e) => {
                     e.preventDefault();
+                    // ad verification for email and verifictation email
+                    // find some way to remove unactivated emails after some time
+                    // enforce strong passwords when creating account
                     if (username && password && email) {
-                        fetch('/api/create-account', {
+                        fetch('/api/create-account/', {
                             headers: {'Content-Type': 'application/json'},
                             method: "POST",
                             body: JSON.stringify({username: username, email: email, password: password, dateCreated:new Date()})

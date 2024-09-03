@@ -6,10 +6,11 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
+const User = require('./models/AccountModel')
 
 const bcrypt = require('bcrypt');
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(express.json())
@@ -20,7 +21,7 @@ const options = {
   cert: fs.readFileSync(path.resolve(__dirname, process.env.CERTIFICATE_PATH))
 };
 
-app.get("/api", (req, res) => {
+app.get("/api/", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
@@ -30,21 +31,57 @@ mongoose.connect(process.env.DB_CONN).then((conn) => {
   console.log(err)
 });
 
-let conn = mongoose.connection;
+app.post("/api/create-account/", (req, res) => {
+  try {
+    bcrypt.hash(req.body.password, 10, (err, hash) => { 
+      if (err) throw err;
 
-app.post("/api/create-account", (req, res) => {
-  bcrypt.hash(req.body.password, 10, (err, hash) => { 
-    if (err) throw err;
-    const User = require('./models/AccountModel')
-
-    let user = new User({
-      username: req.body.username,
-      email:req.body.email,
-      password: hash,
-      dateCreated: new Date(),
+      let user = new User({
+        username: req.body.username,
+        email:req.body.email,
+        password: hash,
+        dateCreated: new Date(),
+      });
+      user.save();
     });
-    user.save();
-  });
+  } catch (err) {
+    console.log(err)
+  }
+});
+
+app.post("/api/login", async (req, res) => {
+  
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      $or: [{ username: username }, { email: username }]
+    });
+
+    if (!user) {
+      return res.status(404).json({ 
+        status: 'success',
+        message: 'Username or email not found' 
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ 
+        status:'fail',
+        message: 'Incorrect password' 
+      });
+    }
+    // change last login date, et logged in to active
+    res.json({ message: 'Login successful' });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ 
+      status:'fail',
+      message: 'Internal server error' 
+    });
+  }
 });
 
 app.listen(PORT, () => {
