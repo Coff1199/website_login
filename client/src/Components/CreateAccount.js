@@ -15,7 +15,13 @@ function Login() {
                     // ad verification for email and verifictation email
                     // find some way to remove unactivated emails after some time
                     // enforce strong passwords when creating account
-                    if (username && password && email) {
+                    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+                    let isStrongPassword = passwordRegex.test(password)
+                    if (!isStrongPassword) {
+                        let newErrors = {}
+                        if (!password) newErrors.password = 'Password must contain at least one lowercase character, an uppercase characterm a number, a special character and the total length must be between 8 and 15 characters';
+                        setErrors(newErrors);
+                    }else if (username && password && email) {
                         fetch('/api/create-account/', {
                             headers: {'Content-Type': 'application/json'},
                             method: "POST",
