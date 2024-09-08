@@ -14,7 +14,6 @@ function Login() {
                     e.preventDefault();
                     // ad verification for email and verifictation email
                     // find some way to remove unactivated emails after some time
-                    // enforce strong passwords when creating account
                     // create loading page and confirmation page on creation of acc or login
                     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
                     let isStrongPassword = passwordRegex.test(password)
