@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./styles/App.css";
 import Login from './Components/Login.js';
 import CreateAccount from './Components/CreateAccount.js'
+import LoadingPage from "./Pages/LoadingPage.js";
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -17,8 +18,12 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-        <CreateAccount />
+        {!data ? <LoadingPage text="Loading"/>: (
+          <>
+          {data}
+          <Login/>
+          </>
+        )}
       </header>
     </div>
   );
