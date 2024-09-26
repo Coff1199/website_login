@@ -19,7 +19,8 @@ const AccountSchema = new mongoose.Schema({
         type: Date
     },
     lastLogin: {
-        type: Date
+        type: Date,
+        default : null
     }
 });
 

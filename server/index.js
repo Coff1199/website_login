@@ -73,8 +73,18 @@ app.post("/api/login", async (req, res) => {
         message: 'Incorrect password' 
       });
     }
-    // change last login date, et logged in to active
-    res.json({ message: 'Login successful' });
+
+    // change LastLogin Date
+    // FIX
+    console.log(user);
+    await User.findByIdAndUpdate(
+      user._id,
+      { $set: { lastLogin: new Date()}},
+      {new: true}
+    );
+    console.log(user)
+
+    res.status(200).json({ message: 'Login successful', user });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ 
