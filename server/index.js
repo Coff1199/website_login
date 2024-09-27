@@ -74,15 +74,12 @@ app.post("/api/login", async (req, res) => {
       });
     }
 
-    // change LastLogin Date
-    // FIX
-    console.log(user);
+    // change lastLogin 
     await User.findByIdAndUpdate(
       user._id,
       { $set: { lastLogin: new Date()}},
       {new: true}
     );
-    console.log(user)
 
     res.status(200).json({ message: 'Login successful', user });
   } catch (error) {
