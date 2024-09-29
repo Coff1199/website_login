@@ -21,7 +21,7 @@ function App() {
         {!data ? <LoadingPage text="Loading"/>: (
           <>
           {data}
-          <Login/>
+          <CreateAccount/>
           </>
         )}
       </header>

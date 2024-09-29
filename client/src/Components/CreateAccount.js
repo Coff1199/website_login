@@ -1,6 +1,11 @@
 import { useState } from "react";
 import '../styles/form.css';
 
+function validateEmailFormat(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -16,28 +21,62 @@ function Login() {
                     // find some way to remove unactivated emails after some time
                     // create loading page and confirmation page on creation of acc or login
                     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
-                    let isStrongPassword = passwordRegex.test(password)
-                    if (!isStrongPassword) {
-                        let newErrors = {}
-                        if (!password) newErrors.password = 'Password must contain at least one lowercase character, an uppercase characterm a number, a special character and the total length must be between 8 and 15 characters';
-                        setErrors(newErrors);
-                    }else if (username && password && email) {
-                        fetch('/api/create-account/', {
-                            headers: {'Content-Type': 'application/json'},
-                            method: "POST",
-                            body: JSON.stringify({username: username, email: email, password: password, dateCreated:new Date()})
-                        })
-                        console.log("Successfully created account and added to database");
-                    } else {
-                        let newErrors = {}
-                        if (!username) newErrors.username ='Username is required';
-                        if (!email) newErrors.email = 'Email is required';
-                        if (!password) newErrors.password = 'Password is required';
-                        setErrors(newErrors);
+                    let newErrors = {};
+
+                    // Validate Password
+                    if (!password) {
+                        newErrors.password = 'Password is required';
+                    } else if (!passwordRegex.test(password)) {
+                        newErrors.password = 'Password must contain at least one lowercase character, an uppercase character, a number, a special character, and be between 8 and 15 characters long';
                     }
-                    setUsername('');
-                    setPassword('');
-                    setEmail('');
+
+                    // Validate Email
+                    if (!email) {
+                        newErrors.email = 'Email is required';
+                    } else if (!validateEmailFormat(email)) {
+                        newErrors.email = 'Invalid email format';
+                    }
+
+                    // Validate Username
+                    if (!username) {
+                        newErrors.username = 'Username is required';
+                    }
+
+                    // Set errors if any validations fail
+                    if (Object.keys(newErrors).length > 0) {
+                        setErrors(newErrors);
+                        return; // Stop further execution if there are validation errors
+                    }
+
+                    // If no errors, proceed with account creation
+                    fetch('/api/create-account/', {
+                        // attempt to add data from login to account
+                        headers: { 'Content-Type': 'application/json' },
+                        method: 'POST',
+                        body: JSON.stringify({
+                            username: username,
+                            email: email,
+                            password: password,
+                            dateCreated: new Date()
+                        })
+                    })
+                    .then(res => {
+                        if (!res.ok) {
+                            return res.json().then(data => {
+                                console.log(data.message);
+                            });
+                        }
+                        console.log('Successfully created account and added to database');
+                        // Clear form fields after successful submission
+                        setUsername('');
+                        setPassword('');
+                        setEmail('');
+                        
+                        return res.json();
+                    })
+                    .catch(error => {
+                        console.error('Error creating account:', error);
+                    });
                 }}>
                 <div className="field">
                     <label htmlFor="user">Username:</label>

@@ -31,8 +31,24 @@ mongoose.connect(process.env.DB_CONN).then((conn) => {
   console.log(err)
 });
 
-app.post("/api/create-account/", (req, res) => {
+app.post("/api/create-account/", async (req, res) => {
   try {
+    // Check if the email or username is already taken
+    const existingUser = await User.findOne({
+        $or: [
+            { email: req.body.email },     // Check for existing email
+            { username: req.body.username } // Check for existing username
+        ]
+    });
+
+    if (existingUser) {
+      // If a user with the same email or username exists, return a 400 error
+      return res.status(400).json({
+          status: 'fail',
+          message: 'Username or email already exists'
+      });
+    }
+
     bcrypt.hash(req.body.password, 10, (err, hash) => { 
       if (err) throw err;
 
@@ -44,9 +60,21 @@ app.post("/api/create-account/", (req, res) => {
       });
       user.save();
     });
+
+    res.status(201).json({
+      status: 'success',
+      message: 'Account successfuly created'
+    });
   } catch (err) {
-    console.log(err)
+    console.log(err);
+
+    //send fail message
+    res.status(500).json({
+      status: "fail",
+      message: "Internal Server Error"
+    })
   }
+
 });
 
 app.post("/api/login", async (req, res) => {
@@ -60,7 +88,7 @@ app.post("/api/login", async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ 
-        status: 'success',
+        status: 'fail',
         message: 'Username or email not found' 
       });
     }
@@ -81,7 +109,11 @@ app.post("/api/login", async (req, res) => {
       {new: true}
     );
 
-    res.status(200).json({ message: 'Login successful', user });
+    res.status(200).json(
+      { 
+        status: 'success',
+        message: 'Login successful', user 
+      });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ 
