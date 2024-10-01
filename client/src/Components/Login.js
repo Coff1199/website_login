@@ -8,6 +8,7 @@ function Login() {
     const [errors, setErrors] = useState({});
     return (
         <>
+            <h2>Login</h2>
             <form id="login-form" onSubmit={ (e) => {
                     e.preventDefault();
                     if (username && password) {
