@@ -1,5 +1,6 @@
 import { useState } from "react";
 import '../styles/form.css';
+import {redirect} from 'react-router-dom';
 
 function validateEmailFormat(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,6 +16,7 @@ function Login() {
 
     return (
         <>
+        <h2>Create Account</h2>
             <form id="create-account-form" onSubmit={ (e) => {
                     e.preventDefault();
                     // ad verification for email and verifictation email
@@ -71,7 +73,10 @@ function Login() {
                         setUsername('');
                         setPassword('');
                         setEmail('');
-                        
+
+                        // redirect to confirmation page
+                       // redirect("/confirmation");
+
                         return res.json();
                     })
                     .catch(error => {
