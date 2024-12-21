@@ -24,8 +24,26 @@
   color: white;
 }
 
+.App-header ul {
+  background-color: azure;
+  width: 90%;
+  
+}
+
+.App-header li {
+  list-style: none;
+  float: left;
+  text-align: center;
+  padding-left: 2rem;
+  width: auto;
+}
+
 .App-link {
   color: #61dafb;
+}
+
+.accordion {
+  color: black;
 }
 
 @keyframes App-logo-spin {
