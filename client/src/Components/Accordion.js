@@ -19,4 +19,6 @@ function Accordion(props) {
     );
 }
 
+// FIX HEADER ISSUE, MAKE SEPARATE FROM PARENT CONTAINER
+
 export default Accordion;
