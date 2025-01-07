@@ -1,4 +1,4 @@
-import "../styles/App.css"
+import "../styles/Accordion.css"
 import { useState } from "react";
 
 function Accordion(props) {
